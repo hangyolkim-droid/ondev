@@ -73,6 +73,7 @@ def build_parser():
     sp.add_argument("--port", type=int, default=8080)
     sp.add_argument("--ctx", type=int, default=4096)
     sp.add_argument("--host", default="127.0.0.1")
+    sp.add_argument("--threads", type=int, default=None, help="threads (default: min(cores,4))")
 
     sp = _artifact_args(sub.add_parser("bench", help="reproducible benchmark → device card"))
     sp.add_argument("--runs", type=int, default=3)
@@ -144,7 +145,9 @@ def main(argv=None):
         return 0
 
     if args.cmd == "serve":
-        return serve_mod.serve(args.model, args.host, args.port, args.ctx, args.bin, args.build_dir)
+        threads = args.threads or min(env.get("cores") or 1, 4)
+        return serve_mod.serve(args.model, args.host, args.port, args.ctx, args.bin,
+                               args.build_dir, threads=threads)
 
     if args.cmd == "bench":
         profile, name = _resolve_profile(args, cfg, env)
