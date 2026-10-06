@@ -12,6 +12,7 @@ from . import package as package_mod
 from . import presets
 from . import profiles as profiles_mod
 from . import serve as serve_mod
+from . import verify as verify_mod
 
 DEFAULT_CONFIG = "ondev.json"
 
@@ -82,6 +83,11 @@ def build_parser():
 
     sp = _artifact_args(sub.add_parser("package", help="bundle binary + model into a tarball"))
     sp.add_argument("--out", default="ondev-package.tar.gz")
+
+    sp = sub.add_parser("verify", help="check built binaries for ELF page alignment")
+    sp.add_argument("--bin")
+    sp.add_argument("--build-dir", default="build")
+    sp.add_argument("--required", type=int, default=16384)
     return p
 
 
@@ -159,5 +165,29 @@ def main(argv=None):
             return 1
         print(package_mod.package(binary, args.model, args.out, env, args.config))
         return 0
+
+    if args.cmd == "verify":
+        targets = [args.bin] if args.bin else [
+            bench_mod.find_binary("llama-bench", args.build_dir),
+            build_mod.find_server(args.build_dir),
+        ]
+        targets = [t for t in targets if t]
+        if not targets:
+            print("no binaries found; run `ondev build` or pass --bin", file=sys.stderr)
+            return 1
+        rc = 0
+        for t in targets:
+            try:
+                r = verify_mod.verify_binary(t, args.required)
+            except (OSError, ValueError) as exc:
+                print(f"FAIL  {t}: {exc}")
+                rc = 1
+                continue
+            status = "PASS" if r["ok"] else "FAIL"
+            print(f"{status}  {r['path']}  max_align=0x{r['max_align']:x} "
+                  f"(required 0x{r['required']:x})  segments={r['load_alignments']}")
+            if not r["ok"]:
+                rc = 1
+        return rc
 
     return 2

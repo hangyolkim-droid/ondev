@@ -71,6 +71,41 @@ class PresetTests(unittest.TestCase):
         # truncated mid-array -> keep the complete objects
         self.assertEqual(bench.parse_bench_json('[{"a":1},{"b":2},{"c"'), [{"a": 1}, {"b": 2}])
 
+    def test_verify_alignment(self):
+        import os as _os
+        import struct
+        import tempfile
+
+        from ondev import verify
+
+        def minimal_elf64(align):
+            ident = b"\x7fELF" + bytes([2, 1, 1, 0]) + bytes(8)
+            hdr = ident
+            hdr += struct.pack("<H", 2)      # e_type
+            hdr += struct.pack("<H", 0xB7)   # e_machine (AArch64)
+            hdr += struct.pack("<I", 1)      # e_version
+            hdr += struct.pack("<Q", 0)      # e_entry
+            hdr += struct.pack("<Q", 0x40)   # e_phoff
+            hdr += struct.pack("<Q", 0)      # e_shoff
+            hdr += struct.pack("<I", 0)      # e_flags
+            hdr += struct.pack("<H", 0x40)   # e_ehsize
+            hdr += struct.pack("<H", 0x38)   # e_phentsize
+            hdr += struct.pack("<H", 1)      # e_phnum
+            hdr += struct.pack("<H", 0) * 3  # shentsize, shnum, shstrndx
+            ph = struct.pack("<IIQQQQQQ", 1, 5, 0, 0, 0, 0x100, 0x100, align)
+            return hdr + ph
+
+        for align, expect_ok in ((0x4000, True), (0x1000, False)):
+            with tempfile.NamedTemporaryFile(suffix=".elf", delete=False) as fh:
+                fh.write(minimal_elf64(align))
+                p = fh.name
+            try:
+                r = verify.verify_binary(p, required=16384)
+                self.assertEqual(r["ok"], expect_ok)
+                self.assertEqual(r["max_align"], align)
+            finally:
+                _os.unlink(p)
+
 
 if __name__ == "__main__":
     unittest.main()
