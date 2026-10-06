@@ -32,7 +32,7 @@ inference. Its value is the build/config/package/measure layer.
 ## Install
 
 ```sh
-git clone https://github.com/<you>/ondev
+git clone https://github.com/hangyolkim-droid/ondev
 cd ondev
 pip install -e .        # or: python -m ondev ...
 ```
