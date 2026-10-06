@@ -3,8 +3,9 @@
   "name": "Generic x86_64",
   "arch": "x86_64",
   "os": "linux",
+  "status": "theoretical",
   "page_size": 4096,
   "linker_flags": [],
   "cmake_flags": ["-DGGML_OPENMP=ON"],
-  "notes": "Desktop/dev target."
+  "notes": "THEORETICAL: desktop/dev target. Not measured."
 }

@@ -3,9 +3,10 @@
   "name": "Generic Android (16 KB pages)",
   "arch": "aarch64",
   "os": "android",
+  "status": "theoretical",
   "page_size": 16384,
   "force_page_alignment": true,
   "linker_flags": ["-Wl,-z,max-page-size=16384"],
   "cmake_flags": ["-DGGML_OPENMP=OFF"],
-  "notes": "Android 15+ on 16 KB-page devices. Without max-page-size=16384 the ELF segments are 4 KB-aligned and the binary aborts at load. OpenMP off by default (Termux clang lacks libomp unless installed)."
+  "notes": "THEORETICAL: targets Android 15+ devices that actually run 16 KB pages. Not yet measured on such hardware. 16 KB alignment is mandatory there. OpenMP off by default (Termux clang lacks libomp unless installed)."
 }

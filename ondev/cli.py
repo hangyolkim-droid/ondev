@@ -109,7 +109,7 @@ def main(argv=None):
         for n in profiles_mod.list_profiles(dirp):
             if args.verbose:
                 pr = profiles_mod.load_profile(n, dirp)
-                print(f"{n}\t{pr.get('name', '')}\t{pr.get('arch')}/{pr.get('os')}")
+                print(f"{n}\t{pr.get('name', '')}\t{pr.get('arch')}/{pr.get('os')}\t[{pr.get('status', 'unknown')}]")
             else:
                 print(n)
         return 0

@@ -71,7 +71,8 @@ Schema (all fields optional except `id`): `name`, `arch`, `os`, `page_size`, `co
 ## Status
 
 v0.1 — early. `init` / `fetch` / `build` / `serve` / `bench` / `package` are implemented.
-See [`docs/quirks.md`](docs/quirks.md) for the environment traps this handles.
+See [`docs/quirks.md`](docs/quirks.md) for the environment traps this handles, and
+[`docs/devices.md`](docs/devices.md) for what is **tested** vs **theoretical**.
 Next: GPU/NPU offload profiles, auto-tuning, a published device-card registry.
 
 ## License

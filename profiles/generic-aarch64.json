@@ -3,8 +3,9 @@
   "name": "Generic ARM64 Linux",
   "arch": "aarch64",
   "os": "linux",
+  "status": "tested",
   "page_size": 4096,
   "linker_flags": [],
   "cmake_flags": ["-DGGML_OPENMP=ON"],
-  "notes": "Default ARM64 Linux. No page alignment needed unless the OS uses 16 KB pages."
+  "notes": "TESTED (build + bench) inside a PRoot layer on ARM64; expect a large speed penalty there. Builds and benchmarks on plain ARM64 Linux without a container."
 }
