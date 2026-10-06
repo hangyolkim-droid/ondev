@@ -15,11 +15,21 @@ def page_size():
         return None
 
 
-def is_termux():
+TERMUX_PREFIX_FALLBACK = "/data/data/com.termux/files/usr"
+
+
+def termux_prefix():
+    """The Termux prefix, from $PREFIX or the well-known path, or None."""
     prefix = os.environ.get("PREFIX", "")
-    if "com.termux" in prefix:
-        return True
-    return os.path.isdir("/data/data/com.termux/files/usr")
+    if prefix and "com.termux" in prefix:
+        return prefix
+    if os.path.isdir(TERMUX_PREFIX_FALLBACK):
+        return TERMUX_PREFIX_FALLBACK
+    return None
+
+
+def is_termux():
+    return termux_prefix() is not None
 
 
 def is_android():
@@ -44,6 +54,7 @@ def detect():
         "platform": platform.system().lower(),
         "android": is_android(),
         "termux": is_termux(),
+        "termux_prefix": termux_prefix(),
         "page_size": page_size(),
         "cores": os.cpu_count() or 1,
         "python": platform.python_version(),

@@ -35,6 +35,35 @@ class PresetTests(unittest.TestCase):
             prof = profiles.load_profile(name, PDIR)
             self.assertEqual(prof["id"], name)
 
+    def test_build_env_sets_prefix(self):
+        import os
+
+        from ondev import build
+
+        saved = os.environ.pop("PREFIX", None)
+        try:
+            e = build.build_env({"termux_prefix": "/data/data/com.termux/files/usr"})
+            self.assertEqual(e["PREFIX"], "/data/data/com.termux/files/usr")
+        finally:
+            if saved is not None:
+                os.environ["PREFIX"] = saved
+
+    def test_build_env_preserves_existing_prefix(self):
+        import os
+
+        from ondev import build
+
+        saved = os.environ.get("PREFIX")
+        os.environ["PREFIX"] = "/already/set"
+        try:
+            e = build.build_env({"termux_prefix": "/data/data/com.termux/files/usr"})
+            self.assertEqual(e["PREFIX"], "/already/set")
+        finally:
+            if saved is None:
+                os.environ.pop("PREFIX", None)
+            else:
+                os.environ["PREFIX"] = saved
+
 
 if __name__ == "__main__":
     unittest.main()

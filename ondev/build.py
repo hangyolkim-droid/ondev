@@ -19,6 +19,21 @@ def has_ninja():
     return shutil.which("ninja") is not None
 
 
+def build_env(env):
+    """Environment for build subprocesses.
+
+    CMake 4.x's Android-**host** branch in CMakeDetermineSystem.cmake reads
+    $ENV{PREFIX}/include/android/api-level.h. In a bare/agent shell PREFIX is
+    often unset, the path collapses to /include/android/api-level.h, and
+    configuration fails with no obvious cause. We restore PREFIX from the
+    detected Termux prefix so the branch resolves.
+    """
+    run_env = dict(os.environ)
+    if env.get("termux_prefix") and not run_env.get("PREFIX"):
+        run_env["PREFIX"] = env["termux_prefix"]
+    return run_env
+
+
 def build(profile, env, src="third_party/llama.cpp", build_dir="build", dry_run=False, jobs=None):
     log = []
     if not dry_run:
@@ -31,8 +46,9 @@ def build(profile, env, src="third_party/llama.cpp", build_dir="build", dry_run=
     if dry_run:
         log.append("(dry run — nothing executed)")
         return {"log": log, "returncode": 0}
-    subprocess.run(configure, check=True)
-    subprocess.run(compile_cmd, check=True)
+    run_env = build_env(env)
+    subprocess.run(configure, check=True, env=run_env)
+    subprocess.run(compile_cmd, check=True, env=run_env)
     log.append("build complete")
     return {"log": log, "returncode": 0}
 

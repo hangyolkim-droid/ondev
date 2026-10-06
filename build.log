@@ -1,0 +1,96 @@
+Cloning into 'third_party/llama.cpp'...
+Updating files:  29% (1074/3689)Updating files:  30% (1107/3689)Updating files:  31% (1144/3689)Updating files:  32% (1181/3689)Updating files:  33% (1218/3689)Updating files:  34% (1255/3689)Updating files:  35% (1292/3689)Updating files:  36% (1329/3689)Updating files:  37% (1365/3689)Updating files:  38% (1402/3689)Updating files:  39% (1439/3689)Updating files:  40% (1476/3689)Updating files:  41% (1513/3689)Updating files:  42% (1550/3689)Updating files:  43% (1587/3689)Updating files:  44% (1624/3689)Updating files:  45% (1661/3689)Updating files:  46% (1697/3689)Updating files:  47% (1734/3689)Updating files:  48% (1771/3689)Updating files:  49% (1808/3689)Updating files:  50% (1845/3689)Updating files:  51% (1882/3689)Updating files:  52% (1919/3689)Updating files:  53% (1956/3689)Updating files:  54% (1993/3689)Updating files:  55% (2029/3689)Updating files:  56% (2066/3689)Updating files:  57% (2103/3689)Updating files:  57% (2116/3689)Updating files:  58% (2140/3689)Updating files:  59% (2177/3689)Updating files:  60% (2214/3689)Updating files:  61% (2251/3689)Updating files:  62% (2288/3689)Updating files:  63% (2325/3689)Updating files:  64% (2361/3689)Updating files:  65% (2398/3689)Updating files:  66% (2435/3689)Updating files:  67% (2472/3689)Updating files:  68% (2509/3689)Updating files:  69% (2546/3689)Updating files:  70% (2583/3689)Updating files:  71% (2620/3689)Updating files:  72% (2657/3689)Updating files:  73% (2693/3689)Updating files:  74% (2730/3689)Updating files:  75% (2767/3689)Updating files:  76% (2804/3689)Updating files:  77% (2841/3689)Updating files:  78% (2878/3689)Updating files:  79% (2915/3689)Updating files:  80% (2952/3689)Updating files:  81% (2989/3689)Updating files:  82% (3025/3689)Updating files:  82% (3039/3689)Updating files:  83% (3062/3689)Updating files:  84% (3099/3689)Updating files:  85% (3136/3689)Updating files:  86% (3173/3689)Updating files:  87% (3210/3689)Updating files:  88% (3247/3689)Updating files:  89% (3284/3689)Updating files:  90% (3321/3689)Updating files:  91% (3357/3689)Updating files:  92% (3394/3689)Updating files:  93% (3431/3689)Updating files:  94% (3468/3689)Updating files:  95% (3505/3689)Updating files:  96% (3542/3689)Updating files:  97% (3579/3689)Updating files:  98% (3616/3689)Updating files:  99% (3653/3689)Updating files: 100% (3689/3689)Updating files: 100% (3689/3689), done.
+CMake Error at /data/data/com.termux/files/usr/share/cmake-4.4/Modules/CMakeDetermineSystem.cmake:40 (file):
+  file failed to open for reading (No such file or directory):
+
+    /include/android/api-level.h
+Call Stack (most recent call first):
+  CMakeLists.txt:2 (project)
+
+
+-- The C compiler identification is Clang 21.1.8
+-- The CXX compiler identification is Clang 21.1.8
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /data/data/com.termux/files/usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /data/data/com.termux/files/usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- llama.cpp version: 0.6.0-dev
+CMAKE_BUILD_TYPE=Release
+-- Found Git: /data/data/com.termux/files/usr/bin/git (found version "2.55.0")
+-- The ASM compiler identification is Clang with GNU-like command-line
+-- Found assembler: /data/data/com.termux/files/usr/bin/cc
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+-- Check if compiler accepts -pthread
+-- Check if compiler accepts -pthread - yes
+-- Found Threads: TRUE
+-- Warning: ccache not found - consider installing it for faster compilation or disable this warning with GGML_CCACHE=OFF
+-- CMAKE_SYSTEM_PROCESSOR: aarch64
+-- GGML_SYSTEM_ARCH: ARM
+-- Including CPU backend
+-- ARM detected
+-- Performing Test GGML_COMPILER_SUPPORTS_FP16_FORMAT_I3E
+-- Performing Test GGML_COMPILER_SUPPORTS_FP16_FORMAT_I3E - Failed
+CMake Warning at ggml/src/ggml-cpu/CMakeLists.txt:155 (message):
+  ARM -march/-mcpu not found, -mcpu=native will be used
+Call Stack (most recent call first):
+  ggml/src/CMakeLists.txt:586 (ggml_add_cpu_backend_variant_impl)
+
+
+-- Performing Test GGML_MACHINE_SUPPORTS_dotprod
+-- Performing Test GGML_MACHINE_SUPPORTS_dotprod - Success
+-- Performing Test GGML_MACHINE_SUPPORTS_i8mm
+-- Performing Test GGML_MACHINE_SUPPORTS_i8mm - Success
+-- Performing Test GGML_MACHINE_SUPPORTS_sve
+-- Performing Test GGML_MACHINE_SUPPORTS_sve - Success
+-- Performing Test GGML_MACHINE_SUPPORTS_sme
+-- Performing Test GGML_MACHINE_SUPPORTS_sme - Success
+-- Checking for ARM features using flags:
+--   -mcpu=native+dotprod+i8mm+sve+sme
+-- Performing Test HAVE_DOTPROD
+-- Performing Test HAVE_DOTPROD - Success
+-- Performing Test HAVE_SVE
+-- Performing Test HAVE_SVE - Success
+-- Performing Test HAVE_MATMUL_INT8
+-- Performing Test HAVE_MATMUL_INT8 - Success
+-- Performing Test HAVE_FMA
+-- Performing Test HAVE_FMA - Success
+-- Performing Test HAVE_FP16_VECTOR_ARITHMETIC
+-- Performing Test HAVE_FP16_VECTOR_ARITHMETIC - Success
+-- Performing Test HAVE_SME
+-- Performing Test HAVE_SME - Success
+-- Adding CPU backend variant ggml-cpu: -mcpu=native+dotprod+i8mm+sve+sme 
+-- ggml version: 0.26.0
+-- ggml commit:  5e03bdd
+-- Looking for pthread_create in pthreads
+-- Looking for pthread_create in pthreads - not found
+-- Looking for pthread_create in pthread
+-- Looking for pthread_create in pthread - found
+-- Found OpenSSL: /data/data/com.termux/files/usr/lib/libcrypto.so (found version "3.6.3")
+-- Performing Test OPENSSL_VERSION_SUPPORTED
+-- Performing Test OPENSSL_VERSION_SUPPORTED - Success
+-- OpenSSL found: 3.6.3
+-- Disabling MTMD_VIDEO because LLAMA_SUBPROCESS is OFF
+-- Generating embedded license file for target: llama-app
+-- Configuring incomplete, errors occurred!
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/root/projects/ondev/ondev/__main__.py", line 4, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/root/projects/ondev/ondev/cli.py", line 123, in main
+    result = build_mod.build(profile, env, args.src, args.build_dir,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/projects/ondev/ondev/build.py", line 34, in build
+    subprocess.run(configure, check=True)
+  File "/usr/lib/python3.11/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['cmake', '-B', 'build', '-S', 'third_party/llama.cpp', '-DCMAKE_BUILD_TYPE=Release', '-DLLAMA_CURL=OFF', '-DGGML_OPENMP=OFF', '-DCMAKE_EXE_LINKER_FLAGS=-Wl,-z,max-page-size=16384', '-DCMAKE_SHARED_LINKER_FLAGS=-Wl,-z,max-page-size=16384']' returned non-zero exit status 1.
+device: android-16k
