@@ -1,0 +1,10 @@
+{
+  "id": "generic-x86_64",
+  "name": "Generic x86_64",
+  "arch": "x86_64",
+  "os": "linux",
+  "page_size": 4096,
+  "linker_flags": [],
+  "cmake_flags": ["-DGGML_OPENMP=ON"],
+  "notes": "Desktop/dev target."
+}

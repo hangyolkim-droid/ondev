@@ -1,0 +1,10 @@
+{
+  "id": "generic-aarch64",
+  "name": "Generic ARM64 Linux",
+  "arch": "aarch64",
+  "os": "linux",
+  "page_size": 4096,
+  "linker_flags": [],
+  "cmake_flags": ["-DGGML_OPENMP=ON"],
+  "notes": "Default ARM64 Linux. No page alignment needed unless the OS uses 16 KB pages."
+}

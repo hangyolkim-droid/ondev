@@ -1,0 +1,12 @@
+{
+  "id": "fold8-ultra",
+  "name": "Samsung Galaxy Z Fold 8 Ultra",
+  "arch": "aarch64",
+  "os": "android",
+  "page_size": 16384,
+  "cores": 8,
+  "force_page_alignment": true,
+  "linker_flags": ["-Wl,-z,max-page-size=16384"],
+  "cmake_flags": ["-DGGML_OPENMP=OFF"],
+  "notes": "Verified profile. Termux native build. 16 KB page alignment required. Thermal headroom is the real limit — see device card."
+}
