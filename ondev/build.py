@@ -4,6 +4,7 @@ import os
 import shutil
 import subprocess
 
+from . import detect
 from . import presets
 
 LLAMA_REPO = "https://github.com/ggml-org/llama.cpp"
@@ -32,6 +33,26 @@ def build_env(env):
     if env.get("termux_prefix") and not run_env.get("PREFIX"):
         run_env["PREFIX"] = env["termux_prefix"]
     return run_env
+
+
+def preflight(env):
+    """Problems that would stop a build — checked by *running* the tools, not just locating them."""
+    problems = []
+    tools = env.get("tools", {})
+    cmake = tools.get("cmake")
+    if not cmake:
+        problems.append("cmake not found — `pkg install cmake`")
+    elif not detect.check_tool(cmake):
+        problems.append(
+            f"cmake at {cmake} exists but won't run (e.g. 'CANNOT LINK EXECUTABLE / missing "
+            "libc++ symbol'). This is a broken Termux toolchain, not an ondev bug: run "
+            "`pkg update && pkg upgrade -y` and retry.")
+    cc = tools.get("clang") or tools.get("cc") or tools.get("gcc")
+    if not cc:
+        problems.append("no C compiler found — `pkg install clang`")
+    elif not detect.check_tool(cc):
+        problems.append(f"compiler at {cc} exists but won't run — try `pkg update && pkg upgrade -y`")
+    return problems
 
 
 def build(profile, env, src="third_party/llama.cpp", build_dir="build", dry_run=False, jobs=None):

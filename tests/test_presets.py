@@ -106,6 +106,20 @@ class PresetTests(unittest.TestCase):
             finally:
                 _os.unlink(p)
 
+    def test_preflight_flags_missing_cmake(self):
+        from ondev import build
+
+        problems = build.preflight({"tools": {}})
+        self.assertTrue(any("cmake" in p for p in problems))
+
+    def test_preflight_passes_with_runnable_tools(self):
+        import sys
+
+        from ondev import build
+
+        problems = build.preflight({"tools": {"cmake": sys.executable, "clang": sys.executable}})
+        self.assertEqual(problems, [])
+
 
 if __name__ == "__main__":
     unittest.main()

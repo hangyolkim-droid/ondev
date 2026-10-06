@@ -97,6 +97,9 @@ def main(argv=None):
     env = detect_mod.detect()
 
     if args.cmd == "doctor":
+        env["tool_health"] = {
+            k: detect_mod.check_tool(v) for k, v in env.get("tools", {}).items() if v
+        }
         print(json.dumps(env, indent=2))
         return 0
 
@@ -128,6 +131,11 @@ def main(argv=None):
 
     if args.cmd == "build":
         profile, name = _resolve_profile(args, cfg, env)
+        problems = build_mod.preflight(env)
+        if problems:
+            for p in problems:
+                print("preflight: " + p, file=sys.stderr)
+            return 1
         print("device:", name)
         result = build_mod.build(profile, env, args.src, args.build_dir,
                                  dry_run=args.dry_run, jobs=args.jobs)

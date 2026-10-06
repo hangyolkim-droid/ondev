@@ -3,6 +3,7 @@
 import os
 import platform
 import shutil
+import subprocess
 
 PAGE_ALIGN_THRESHOLD = 16384
 
@@ -46,6 +47,18 @@ def needs_page_alignment(env):
     """
     ps = env.get("page_size")
     return bool(env.get("android") and ps and ps >= PAGE_ALIGN_THRESHOLD)
+
+
+def check_tool(path, args=("--version",), timeout=20):
+    """True if the tool actually executes — not merely exists on PATH."""
+    if not path:
+        return False
+    try:
+        proc = subprocess.run([path, *args], stdout=subprocess.DEVNULL,
+                              stderr=subprocess.DEVNULL, timeout=timeout)
+        return proc.returncode == 0
+    except (OSError, subprocess.SubprocessError):
+        return False
 
 
 def detect():
