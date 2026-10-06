@@ -5,6 +5,7 @@
   "os": "android",
   "page_size": 16384,
   "cores": 8,
+  "threads": 4,
   "force_page_alignment": true,
   "linker_flags": ["-Wl,-z,max-page-size=16384"],
   "cmake_flags": ["-DGGML_OPENMP=OFF"],

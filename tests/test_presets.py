@@ -64,6 +64,13 @@ class PresetTests(unittest.TestCase):
             else:
                 os.environ["PREFIX"] = saved
 
+    def test_parse_bench_json_tolerates_truncation(self):
+        from ondev import bench
+
+        self.assertEqual(bench.parse_bench_json('[{"a":1},{"b":2}]'), [{"a": 1}, {"b": 2}])
+        # truncated mid-array -> keep the complete objects
+        self.assertEqual(bench.parse_bench_json('[{"a":1},{"b":2},{"c"'), [{"a": 1}, {"b": 2}])
+
 
 if __name__ == "__main__":
     unittest.main()

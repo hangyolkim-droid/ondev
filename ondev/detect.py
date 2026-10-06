@@ -57,12 +57,34 @@ def detect():
         "termux_prefix": termux_prefix(),
         "page_size": page_size(),
         "cores": os.cpu_count() or 1,
+        "perf_cores": performance_cores(),
         "python": platform.python_version(),
         "tools": {
             t: shutil.which(t)
             for t in ("git", "cmake", "clang", "gcc", "make", "ninja", "cc", "c++")
         },
     }
+
+
+def performance_cores():
+    """Count the 'big' cluster on a big.LITTLE SoC, or None if unknown.
+
+    ggml's spin-barrier can collapse when threads are spread across slow and fast
+    cores: on a phone with 8 logical cores, using all 8 can be ~100x slower than 4.
+    """
+    import glob
+
+    freqs = []
+    for p in glob.glob("/sys/devices/system/cpu/cpu[0-9]*/cpufreq/cpuinfo_max_freq"):
+        try:
+            with open(p) as fh:
+                freqs.append(int(fh.read().strip()))
+        except (OSError, ValueError):
+            continue
+    if not freqs:
+        return None
+    top = max(freqs)
+    return max(1, sum(1 for f in freqs if f >= top * 0.9))
 
 
 def auto_profile_name(env):

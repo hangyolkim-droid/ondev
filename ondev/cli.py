@@ -75,6 +75,9 @@ def build_parser():
 
     sp = _artifact_args(sub.add_parser("bench", help="reproducible benchmark → device card"))
     sp.add_argument("--runs", type=int, default=3)
+    sp.add_argument("--pp", type=int, default=32, help="prompt tokens for the pp test")
+    sp.add_argument("--tg", type=int, default=8, help="tokens to generate for the tg test")
+    sp.add_argument("--threads", type=int, default=None, help="threads (default: perf cores, else min(cores,4))")
     sp.add_argument("--out", default="ondev-bench.json")
 
     sp = _artifact_args(sub.add_parser("package", help="bundle binary + model into a tarball"))
@@ -135,8 +138,11 @@ def main(argv=None):
         if not binary:
             print("llama-bench not found; run `ondev build` or pass --bin", file=sys.stderr)
             return 1
+        threads = (args.threads or profile.get("threads") or env.get("perf_cores")
+                   or min(env.get("cores") or 1, 4))
         try:
-            res = bench_mod.run_bench(binary, args.model, args.runs)
+            res = bench_mod.run_bench(binary, args.model, args.runs,
+                                      pp=args.pp, tg=args.tg, threads=threads)
             card = bench_mod.device_card(env, profile, args.model, args.runs, res["results"])
         except (RuntimeError, ValueError) as exc:
             print(f"bench failed: {exc}", file=sys.stderr)
