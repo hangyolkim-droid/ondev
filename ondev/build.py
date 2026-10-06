@@ -19,13 +19,13 @@ def has_ninja():
     return shutil.which("ninja") is not None
 
 
-def build(profile, env, src="third_party/llama.cpp", build_dir="build", dry_run=False):
+def build(profile, env, src="third_party/llama.cpp", build_dir="build", dry_run=False, jobs=None):
     log = []
     if not dry_run:
         ensure_source(src)
     ninja = has_ninja()
     configure = presets.configure_command(profile, env, src, build_dir, ninja=ninja)
-    compile_cmd = presets.build_command(build_dir, env.get("cores") or 1)
+    compile_cmd = presets.build_command(build_dir, jobs or env.get("cores") or 1)
     log.append("$ " + " ".join(configure))
     log.append("$ " + " ".join(compile_cmd))
     if dry_run:

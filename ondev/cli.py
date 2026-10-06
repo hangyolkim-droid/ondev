@@ -65,6 +65,7 @@ def build_parser():
     sp.add_argument("--device")
     sp.add_argument("--src", default="third_party/llama.cpp")
     sp.add_argument("--build-dir", default="build")
+    sp.add_argument("--jobs", type=int, default=None, help="parallel compile jobs (default: cores)")
     sp.add_argument("--dry-run", action="store_true")
 
     sp = _artifact_args(sub.add_parser("serve", help="launch an OpenAI-compatible server"))
@@ -119,7 +120,8 @@ def main(argv=None):
     if args.cmd == "build":
         profile, name = _resolve_profile(args, cfg, env)
         print("device:", name)
-        result = build_mod.build(profile, env, args.src, args.build_dir, dry_run=args.dry_run)
+        result = build_mod.build(profile, env, args.src, args.build_dir,
+                                 dry_run=args.dry_run, jobs=args.jobs)
         for line in result["log"]:
             print(line)
         return 0
