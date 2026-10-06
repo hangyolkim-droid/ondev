@@ -21,7 +21,7 @@ def load_alignments(path):
             raise ValueError("not an ELF file")
         if ident[4] != 2:
             raise ValueError("not a 64-bit ELF")
-        endian = "<" if ident[5] == 1 else ">"
+        endian = "little" if ident[5] == 1 else "big"
         e_phoff = _u(fh, 0x20, 8, endian)
         e_phentsize = _u(fh, 0x36, 2, endian)
         e_phnum = _u(fh, 0x38, 2, endian)
